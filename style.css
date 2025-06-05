@@ -8,7 +8,9 @@ body {
     background-color: #f0f0f0;
 }
 
-h1 {
-    color: #333;
+h1.game-title {
+    color: #00008B;
+    font-size: 1.5rem;
+    font-family: "Courier New", Courier, monospace;
     text-align: center;
-} 
+}
