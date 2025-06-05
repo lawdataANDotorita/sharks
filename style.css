@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
@@ -11,4 +11,43 @@ body {
 h1 {
     color: #333;
     text-align: center;
-} 
+}
+
+#ocean {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(to bottom, #4db8ff, #0066cc);
+    overflow: hidden;
+}
+
+#swimmer {
+    position: absolute;
+    left: 60px;
+    top: 120px;
+    width: 80px;
+    height: 40px;
+}
+
+.shark {
+    position: absolute;
+    bottom: 20px;
+    width: 100px;
+    height: 40px;
+    animation: shark-swim 10s linear infinite;
+}
+
+#shark1 {
+    left: 300px;
+    animation-delay: 0s;
+}
+
+#shark2 {
+    left: 500px;
+    animation-delay: 5s;
+}
+
+@keyframes shark-swim {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-150%); }
+}
