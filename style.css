@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -8,7 +9,23 @@ body {
     background-color: #f0f0f0;
 }
 
+.container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.shark {
+    width: 400px;
+    height: auto;
+}
+
+.swimmer {
+    width: 200px;
+    height: auto;
+}
+
 h1 {
     color: #333;
     text-align: center;
-} 
+}
