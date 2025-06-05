@@ -8,7 +8,49 @@ body {
     background-color: #f0f0f0;
 }
 
-h1 {
-    color: #333;
+#gameboard {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    border: 2px solid #333;
+    overflow: hidden;
+}
+
+#strike-counter {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-weight: bold;
+}
+
+#message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
     text-align: center;
-} 
+}
+
+#target {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#replay {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+}
+
+.hidden {
+    display: none;
+}
