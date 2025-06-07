@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tileSize = 40;
     let level = 1;
     let strikes = 0;
+    const SAFE_ROWS = 3; // rows closest to the bottom reserved for the player
+    const START_ROW = 1; // player starts one row above the lowest row
     let player;
     let sharks = [];
     // Start the game with a single shark on screen
@@ -68,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         player = document.createElement('div');
         player.classList.add('player');
         player.style.left = (width / 2 - 15) + 'px';
-        player.style.top = (height - tileSize) + 'px';
+        player.style.top = (height - tileSize * (START_ROW + 1)) + 'px';
         gameArea.appendChild(player);
     }
 
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getAvailableRow(rows) {
         const available = [];
-        for (let r = 0; r < rows; r++) {
+        for (let r = SAFE_ROWS; r < rows; r++) {
             if ((sharksPerRow[r] || 0) < MAX_SHARKS_PER_ROW) {
                 available.push(r);
             }
@@ -112,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameArea.style.height = height + 'px';
         levelDisplay.textContent = level;
         createPlayer(height, width);
-        const rows = level + 1;
+        const rows = level + SAFE_ROWS + 1;
         for (let i = 0; i < INITIAL_SHARKS; i++) {
             const row = getAvailableRow(rows);
             if (row === null) break;
@@ -134,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gameOverText.style.display = 'block';
         } else {
             player.style.left = (gameArea.clientWidth / 2 - 15) + 'px';
-            player.style.top = (gameArea.clientHeight - tileSize) + 'px';
+            player.style.top = (gameArea.clientHeight - tileSize * (START_ROW + 1)) + 'px';
         }
     }
 
@@ -154,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             level++;
             levelDisplay.textContent = level;
             if (sharks.length < MAX_TOTAL_SHARKS) {
-                const rows = level + 1;
+                const rows = level + SAFE_ROWS + 1;
                 const row = getAvailableRow(rows);
                 if (row !== null) {
                     const top = gameArea.clientHeight - tileSize * (row + 1);
@@ -162,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             player.style.left = (gameArea.clientWidth / 2 - 15) + 'px';
-            player.style.top = (gameArea.clientHeight - tileSize) + 'px';
+            player.style.top = (gameArea.clientHeight - tileSize * (START_ROW + 1)) + 'px';
         }
     }
 
