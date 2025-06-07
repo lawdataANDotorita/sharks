@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
             replayButton.style.display = 'block';
             gameOverText.style.display = 'block';
         } else {
-            startLevel();
+            player.style.left = (gameArea.clientWidth / 2 - 15) + 'px';
+            player.style.top = (gameArea.clientHeight - tileSize) + 'px';
         }
     }
 
