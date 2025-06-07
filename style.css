@@ -29,6 +29,11 @@ body {
     font-size: 16px;
 }
 
+#mute {
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
 #gameOver {
     position: fixed;
     top: 50%;
