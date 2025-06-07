@@ -6,8 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let strikes = 0;
     let player;
     let sharks = [];
-    let sharkCount = 2;
-    const MAX_SHARKS = 3;
+    const INITIAL_SHARKS = 2;
+    const MAX_SHARKS_PER_ROW = 3;
+    const MAX_TOTAL_SHARKS = 50;
+    let sharksPerRow = {};
     let gameOver = false;
     let animationId;
 
@@ -23,20 +25,34 @@ document.addEventListener('DOMContentLoaded', () => {
         gameArea.appendChild(player);
     }
 
-    function createShark(top, speed) {
+    function createShark(row, top, speed) {
         const shark = document.createElement('div');
         shark.classList.add('shark');
         shark.style.top = top + 'px';
         shark.style.left = Math.random() * (gameArea.clientWidth - 50) + 'px';
         shark.dataset.speed = speed;
         shark.dataset.direction = Math.random() > 0.5 ? 1 : -1;
+        shark.dataset.row = row;
         gameArea.appendChild(shark);
         sharks.push(shark);
+        sharksPerRow[row] = (sharksPerRow[row] || 0) + 1;
+    }
+
+    function getAvailableRow(rows) {
+        const available = [];
+        for (let r = 0; r < rows; r++) {
+            if ((sharksPerRow[r] || 0) < MAX_SHARKS_PER_ROW) {
+                available.push(r);
+            }
+        }
+        if (available.length === 0) return null;
+        return available[Math.floor(Math.random() * available.length)];
     }
 
     function startLevel() {
         gameArea.innerHTML = '';
         sharks = [];
+        sharksPerRow = {};
         const width = 400;
         const height = 300 + level * 40;
         gameArea.style.width = width + 'px';
@@ -44,10 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         levelDisplay.textContent = level;
         createPlayer(height, width);
         const rows = level + 1;
-        for (let i = 0; i < sharkCount; i++) {
-            const row = Math.floor(Math.random() * rows);
+        for (let i = 0; i < INITIAL_SHARKS; i++) {
+            const row = getAvailableRow(rows);
+            if (row === null) break;
             const top = tileSize + row * tileSize;
-            createShark(top, 1 + level * 0.5);
+            createShark(row, top, 1 + level * 0.5);
         }
     }
 
@@ -76,12 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (newTop <= 0) {
             level++;
             levelDisplay.textContent = level;
-            if (sharkCount < MAX_SHARKS) {
-                sharkCount++;
+            if (sharks.length < MAX_TOTAL_SHARKS) {
                 const rows = level + 1;
-                const row = Math.floor(Math.random() * rows);
-                const top = tileSize + row * tileSize;
-                createShark(top, 1 + level * 0.5);
+                const row = getAvailableRow(rows);
+                if (row !== null) {
+                    const top = tileSize + row * tileSize;
+                    createShark(row, top, 1 + level * 0.5);
+                }
             }
             player.style.left = (gameArea.clientWidth / 2 - 15) + 'px';
             player.style.top = (gameArea.clientHeight - tileSize) + 'px';
@@ -126,7 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
         strikes = 0;
         updateStrikes();
         level = 1;
-        sharkCount = 2;
+        sharksPerRow = {};
+        sharks = [];
         gameOver = false;
         gameOverText.style.display = 'none';
         replayButton.style.display = 'none';
