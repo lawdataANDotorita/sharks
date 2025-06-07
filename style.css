@@ -19,6 +19,7 @@ body {
     color: #fff;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 400px;
 }
 
@@ -30,8 +31,9 @@ body {
 }
 
 #mute {
-    padding: 5px 10px;
-    font-size: 24px;
+    padding: 2px 6px;
+    font-size: 20px;
+    border: none;
 }
 
 #gameOver {
