@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let player;
     let sharks = [];
     let sharkCount = 2;
+    const MAX_SHARKS = 3;
     let gameOver = false;
     let animationId;
 
@@ -73,8 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
         player.style.top = newTop + 'px';
         if (newTop <= 0) {
             level++;
-            sharkCount++;
-            startLevel();
+            levelDisplay.textContent = level;
+            if (sharkCount < MAX_SHARKS) {
+                sharkCount++;
+                const rows = level + 1;
+                const row = Math.floor(Math.random() * rows);
+                const top = tileSize + row * tileSize;
+                createShark(top, 1 + level * 0.5);
+            }
+            player.style.left = (gameArea.clientWidth / 2 - 15) + 'px';
+            player.style.top = (gameArea.clientHeight - tileSize) + 'px';
         }
     }
 
