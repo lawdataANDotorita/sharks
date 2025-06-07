@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < INITIAL_SHARKS; i++) {
             const row = getAvailableRow(rows);
             if (row === null) break;
-            const top = tileSize + row * tileSize;
+            const top = height - tileSize * (row + 1);
             createShark(row, top, 1 + level * 0.5);
         }
     }
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rows = level + 1;
                 const row = getAvailableRow(rows);
                 if (row !== null) {
-                    const top = tileSize + row * tileSize;
+                    const top = gameArea.clientHeight - tileSize * (row + 1);
                     createShark(row, top, 1 + level * 0.5);
                 }
             }
