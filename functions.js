@@ -32,6 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         shark.style.left = Math.random() * (gameArea.clientWidth - 50) + 'px';
         shark.dataset.speed = speed;
         shark.dataset.direction = Math.random() > 0.5 ? 1 : -1;
+        // Flip the shark image when moving left to right
+        if (parseFloat(shark.dataset.direction) > 0) {
+            shark.style.transform = 'scaleX(-1)';
+        } else {
+            shark.style.transform = 'scaleX(1)';
+        }
         shark.dataset.row = row;
         gameArea.appendChild(shark);
         sharks.push(shark);
