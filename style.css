@@ -8,6 +8,10 @@ body {
     margin: 0;
     background-color: #87cefa;
 }
+#title {
+    color: #1e90ff;
+    margin: 20px 0 10px;
+}
 
 #info {
     margin: 10px;
