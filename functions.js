@@ -13,9 +13,51 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameOver = false;
     let animationId;
 
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    let backgroundInterval;
+
     const strikeDisplay = document.getElementById('strikes');
     const replayButton = document.getElementById('replay');
     const gameOverText = document.getElementById('gameOver');
+
+    function playTone(freq, dur, type="sine", volume=0.5) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+    }
+
+    function stepSound() {
+        playTone(440, 0.1, 'square', 0.2);
+    }
+
+    function successSound() {
+        playTone(880, 0.3, 'triangle', 0.3);
+    }
+
+    function collisionSound() {
+        playTone(60, 0.6, 'sawtooth', 0.4);
+    }
+
+    function startBackgroundMusic() {
+        const pattern = [60, 65, 70, 75, 80, 85];
+        let idx = 0;
+        backgroundInterval = setInterval(() => {
+            if (gameOver) {
+                clearInterval(backgroundInterval);
+                backgroundInterval = null;
+                return;
+            }
+            playTone(pattern[idx], 0.4, 'sawtooth', 0.05);
+            idx = (idx + 1) % pattern.length;
+        }, 600);
+    }
 
     function createPlayer(height, width) {
         player = document.createElement('div');
@@ -92,11 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function movePlayer(dx, dy) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (!backgroundInterval) startBackgroundMusic();
+        const curLeft = player.offsetLeft;
+        const curTop = player.offsetTop;
         const newLeft = Math.max(0, Math.min(gameArea.clientWidth - 30, player.offsetLeft + dx));
         const newTop = Math.max(0, Math.min(gameArea.clientHeight - 30, player.offsetTop + dy));
+        const moved = newLeft !== curLeft || newTop !== curTop;
         player.style.left = newLeft + 'px';
         player.style.top = newTop + 'px';
+        if (moved) stepSound();
         if (newTop <= 0) {
+            successSound();
             level++;
             levelDisplay.textContent = level;
             if (sharks.length < MAX_TOTAL_SHARKS) {
@@ -131,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             shark.style.left = left + 'px';
             if (!gameOver && isColliding(player, shark)) {
+                collisionSound();
                 handleStrike();
             }
         });
@@ -140,6 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', (e) => {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (!backgroundInterval) startBackgroundMusic();
         if (e.key === 'ArrowUp') movePlayer(0, -tileSize / 2);
         if (e.key === 'ArrowDown') movePlayer(0, tileSize / 2);
         if (e.key === 'ArrowLeft') movePlayer(-tileSize / 2, 0);
@@ -156,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameOverText.style.display = 'none';
         replayButton.style.display = 'none';
         startLevel();
+        if (!backgroundInterval) startBackgroundMusic();
         animationId = requestAnimationFrame(animate);
     });
 
