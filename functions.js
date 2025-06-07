@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let strikes = 0;
     let player;
     let sharks = [];
+    let sharkCount = 2;
     let gameOver = false;
     let animationId;
 
@@ -42,12 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
         levelDisplay.textContent = level;
         createPlayer(height, width);
         const rows = level + 1;
-        for (let row = 0; row < rows; row++) {
+        for (let i = 0; i < sharkCount; i++) {
+            const row = Math.floor(Math.random() * rows);
             const top = tileSize + row * tileSize;
-            const sharksInRow = Math.floor(Math.random() * Math.min(3, level)) + 1;
-            for (let i = 0; i < sharksInRow; i++) {
-                createShark(top, 1 + level * 0.5);
-            }
+            createShark(top, 1 + level * 0.5);
         }
     }
 
@@ -74,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         player.style.top = newTop + 'px';
         if (newTop <= 0) {
             level++;
+            sharkCount++;
             startLevel();
         }
     }
@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         strikes = 0;
         updateStrikes();
         level = 1;
+        sharkCount = 2;
         gameOver = false;
         gameOverText.style.display = 'none';
         replayButton.style.display = 'none';
