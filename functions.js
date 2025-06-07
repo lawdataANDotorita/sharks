@@ -41,10 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
         gameArea.style.height = height + 'px';
         levelDisplay.textContent = level;
         createPlayer(height, width);
-        const sharkCount = 2 + (level - 1);
-        for (let i = 0; i < sharkCount; i++) {
-            const top = tileSize + (i % (level + 1)) * tileSize;
-            createShark(top, 1 + level * 0.5);
+        const rows = level + 1;
+        for (let row = 0; row < rows; row++) {
+            const top = tileSize + row * tileSize;
+            const sharksInRow = Math.floor(Math.random() * Math.min(3, level)) + 1;
+            for (let i = 0; i < sharksInRow; i++) {
+                createShark(top, 1 + level * 0.5);
+            }
         }
     }
 
