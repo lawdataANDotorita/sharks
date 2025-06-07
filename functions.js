@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let strikes = 0;
     let player;
     let sharks = [];
-    const INITIAL_SHARKS = 2;
+    // Start the game with a single shark on screen
+    const INITIAL_SHARKS = 1;
     const MAX_SHARKS_PER_ROW = 3;
     const MAX_TOTAL_SHARKS = 50;
     let sharksPerRow = {};
