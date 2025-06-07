@@ -3,8 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const levelDisplay = document.getElementById('level');
     const tileSize = 40;
     let level = 1;
+    let strikes = 0;
     let player;
     let sharks = [];
+    let gameOver = false;
+    let animationId;
+
+    const strikeDisplay = document.getElementById('strikes');
+    const replayButton = document.getElementById('replay');
 
     function createPlayer(height, width) {
         player = document.createElement('div');
@@ -41,6 +47,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function updateStrikes() {
+        strikeDisplay.textContent = strikes;
+    }
+
+    function handleStrike() {
+        strikes++;
+        updateStrikes();
+        if (strikes >= 3) {
+            gameOver = true;
+            replayButton.style.display = 'block';
+        } else {
+            startLevel();
+        }
+    }
+
     function movePlayer(dx, dy) {
         const newLeft = Math.max(0, Math.min(gameArea.clientWidth - 30, player.offsetLeft + dx));
         const newTop = Math.max(0, Math.min(gameArea.clientHeight - 30, player.offsetTop + dy));
@@ -59,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function animate() {
+        if (gameOver) return;
         sharks.forEach(shark => {
             const speed = parseFloat(shark.dataset.speed);
             let left = shark.offsetLeft + speed * parseFloat(shark.dataset.direction);
@@ -69,11 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 left = gameArea.clientWidth;
             }
             shark.style.left = left + 'px';
-            if (isColliding(player, shark)) {
-                startLevel();
+            if (!gameOver && isColliding(player, shark)) {
+                handleStrike();
             }
         });
-        requestAnimationFrame(animate);
+        if (!gameOver) {
+            animationId = requestAnimationFrame(animate);
+        }
     }
 
     document.addEventListener('keydown', (e) => {
@@ -83,6 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowRight') movePlayer(tileSize / 2, 0);
     });
 
+    replayButton.addEventListener('click', () => {
+        strikes = 0;
+        updateStrikes();
+        level = 1;
+        gameOver = false;
+        replayButton.style.display = 'none';
+        startLevel();
+        animationId = requestAnimationFrame(animate);
+    });
+
     startLevel();
-    requestAnimationFrame(animate);
+    updateStrikes();
+    animationId = requestAnimationFrame(animate);
 });
