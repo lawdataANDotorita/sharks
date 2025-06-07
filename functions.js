@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameOverText = document.getElementById('gameOver');
     const muteButton = document.getElementById('mute');
     let muted = false;
+    muteButton.textContent = '🔊';
 
     function playTone(freq, dur, type="sine", volume=0.5) {
         if (muted) return;
@@ -217,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     muteButton.addEventListener('click', () => {
         muted = !muted;
-        muteButton.textContent = muted ? 'Unmute' : 'Mute';
+        muteButton.textContent = muted ? '🔇' : '🔊';
         if (!muted && audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
