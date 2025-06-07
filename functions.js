@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const strikeDisplay = document.getElementById('strikes');
     const replayButton = document.getElementById('replay');
+    const gameOverText = document.getElementById('gameOver');
 
     function createPlayer(height, width) {
         player = document.createElement('div');
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (strikes >= 3) {
             gameOver = true;
             replayButton.style.display = 'block';
+            gameOverText.style.display = 'block';
         } else {
             startLevel();
         }
@@ -112,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStrikes();
         level = 1;
         gameOver = false;
+        gameOverText.style.display = 'none';
         replayButton.style.display = 'none';
         startLevel();
         animationId = requestAnimationFrame(animate);
