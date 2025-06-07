@@ -20,8 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const strikeDisplay = document.getElementById('strikes');
     const replayButton = document.getElementById('replay');
     const gameOverText = document.getElementById('gameOver');
+    const muteButton = document.getElementById('mute');
+    let muted = false;
 
     function playTone(freq, dur, type="sine", volume=0.5) {
+        if (muted) return;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = type;
@@ -210,6 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
         startLevel();
         if (!backgroundInterval) startBackgroundMusic();
         animationId = requestAnimationFrame(animate);
+    });
+
+    muteButton.addEventListener('click', () => {
+        muted = !muted;
+        muteButton.textContent = muted ? 'Unmute' : 'Mute';
+        if (!muted && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
     });
 
     startLevel();
