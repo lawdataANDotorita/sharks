@@ -15,8 +15,13 @@ body {
     gap: 20px;
 }
 
+.shark-container {
+    display: flex;
+    gap: 20px;
+}
+
 .shark {
-    width: 400px;
+    width: 200px;
     height: auto;
 }
 
