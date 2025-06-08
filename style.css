@@ -45,6 +45,7 @@ body {
     font-size: 48px;
     display: none;
     z-index: 1000;
+    white-space: nowrap;
 }
 
 #gameArea {
