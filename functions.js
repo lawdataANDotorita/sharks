@@ -1,6 +1,7 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.shark-container');
+    const gameOverEl = document.getElementById('gameOver');
     if (!container) {
         console.error('Shark container not found');
         return;
@@ -17,4 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     console.log(`Loaded ${sharkCount} shark(s)`);
+
+    // Simulate a game over condition after loading the sharks
+    if (gameOverEl) {
+        setTimeout(() => {
+            gameOverEl.style.display = 'block';
+        }, 2000);
+    }
 });
