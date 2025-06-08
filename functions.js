@@ -106,6 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startLevel() {
         gameArea.innerHTML = '';
+        gameArea.appendChild(gameOverText);
+        gameOverText.style.display = 'none';
         sharks = [];
         sharksPerRow = {};
         const width = 400;
